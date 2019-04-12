@@ -21,7 +21,7 @@
         账号:root 密码:123456
 
 # git地址
-https://github.com/bj-wangxiaoxiao/3brother.git
+git@github.com:bj-wangxiaoxiao/OB.git
     
 # 项目域名
     正式环境: xxxxxx
