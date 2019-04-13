@@ -21,7 +21,7 @@
         账号:root 密码:123456
 
 # git地址
-git@github.com:bj-wangxiaoxiao/OB.git
+git@github.com:bj-wangxiaoxiao/ob.git
     
 # 项目域名
     正式环境: xxxxxx
