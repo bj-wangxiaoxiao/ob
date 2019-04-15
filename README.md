@@ -26,6 +26,9 @@ git@github.com:bj-wangxiaoxiao/OB.git
 # 项目域名
     正式环境: xxxxxx
     测试环境: xxxxxx
+#数据库详情
+    后台表开头：ob_admin_
+    前台表开头：ob_
     
     
     
