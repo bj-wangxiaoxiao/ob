@@ -20,7 +20,7 @@ class m190413_071437_admin_user extends Migration
 	    }
 	
 	    $this->createTable($this->tableName, [
-		    'u_id' => $this->primaryKey()->comment('唯一键'),//默认自动增长AUTO_INCREMENT
+		    'a_id' => $this->primaryKey()->comment('唯一键'),//默认自动增长AUTO_INCREMENT
 		    'name'=>$this->string(255)->notNull()->comment('姓名'),
 		    'phone'=>$this->string(255)->defaultValue('')->comment('手机号码'),
 		    'nickname'=>$this->string(255)->comment('别名'),
@@ -34,9 +34,10 @@ class m190413_071437_admin_user extends Migration
 		    'create_time'=>$this->integer(11)->notNull()->comment('创建时间'),
 		    'update_time'=>$this->integer(11)->notNull()->comment('更新时间'),
 	    ], $tableOptions);
-	    $this->createIndex('idx_title',$this->tableName,'title');
-	    $this->createIndex('idx_branch_name',$this->tableName,'branch_name');
-	    $this->createIndex('idx_status',$this->tableName,'status');
+	    $this->createIndex('idx_is_deleted',$this->tableName,'is_deleted');
+	    $this->createIndex('idx_password',$this->tableName,'password');
+	    $this->createIndex('idx_email',$this->tableName,'email');
+	    $this->createIndex('idx_phone',$this->tableName,'phone');
     }
 
     /**
