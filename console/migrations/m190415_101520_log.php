@@ -26,6 +26,7 @@ class m190415_101520_log extends Migration
             'create_time'=>$this->integer(11)->notNull()->comment('创建时间'),
             'update_time'=>$this->integer(11)->notNull()->comment('更新时间'),
         ], $tableOptions);
+        $this->createIndex('idx_is_deleted',$this->tableName,'is_deleteds');
     }
 
     /**
