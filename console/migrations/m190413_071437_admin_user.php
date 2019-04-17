@@ -20,7 +20,7 @@ class m190413_071437_admin_user extends Migration
 	    }
 	
 	    $this->createTable($this->tableName, [
-		    'a_id' => $this->primaryKey()->comment('唯一键'),//默认自动增长AUTO_INCREMENT
+		    'admin_user_id' => $this->primaryKey()->comment('唯一键'),//默认自动增长AUTO_INCREMENT
 		    'name'=>$this->string(255)->notNull()->comment('姓名'),
 		    'phone'=>$this->string(255)->defaultValue('')->comment('手机号码'),
 		    'nickname'=>$this->string(255)->comment('别名'),
@@ -30,7 +30,7 @@ class m190413_071437_admin_user extends Migration
 		    'pwd_salt'=>$this->string(255)->notNull()->comment('密码盐，每个用户都不一样'),
 		    'introduction'=>$this->string(255)->defaultValue('')->comment('自我介绍'),
 		    'is_deleted'=>$this->integer(1)->defaultValue(0)->comment('是否删除：0、否；1、是，默认为0'),
-		    'last_login_id'=>$this->string(255)->defaultValue('')->comment('最近一次登录ip'),
+		    'last_login_ip'=>$this->string(255)->defaultValue('')->comment('最近一次登录ip'),
 		    'create_time'=>$this->integer(11)->notNull()->comment('创建时间'),
 		    'update_time'=>$this->integer(11)->notNull()->comment('更新时间'),
 	    ], $tableOptions);
