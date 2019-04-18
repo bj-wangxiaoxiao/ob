@@ -29,6 +29,7 @@ class m190415_090232_admin_auth extends Migration
 		], $tableOptions);
 		$this->createIndex('idx_name',$this->tableName,'name');
 		$this->createIndex('idx_pid',$this->tableName,'pid');
+		$this->createIndex('idx_is_deleted',$this->tableName,'is_deleted');
 	}
 
     /**
