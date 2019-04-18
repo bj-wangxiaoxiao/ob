@@ -22,6 +22,13 @@
 
 # git地址
 git@github.com:bj-wangxiaoxiao/ob.git
+
+#前台地址
+ http://blog.3brother.cn
+ 
+ #后台地址
+ http://admin.blog.3brother.cn
+
     
 # 项目域名
     正式环境: xxxxxx
