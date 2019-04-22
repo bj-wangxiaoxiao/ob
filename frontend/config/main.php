@@ -8,9 +8,11 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
-    'basePath' => dirname(__DIR__),
+    'basePath' => dirname(__DIR__),//默认前台根目录
     'bootstrap' => ['log'],
+    'language'  =>  'zh-CN',
     'controllerNamespace' => 'frontend\controllers',
+    'defaultRoute'  =>  'site/index',//设置前台默认路由
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -36,14 +38,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+        //开启url美化
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

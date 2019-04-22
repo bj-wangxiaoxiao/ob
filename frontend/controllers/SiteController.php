@@ -74,6 +74,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+//        $this->layout = 'head';
         return $this->render('index');
     }
 
