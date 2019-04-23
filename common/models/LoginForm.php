@@ -42,6 +42,8 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
+//            echo "<pre/>";
+//            print_r($user);die;
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, '请输入正确用户名和密码');
             }
@@ -85,6 +87,8 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
+//            echo "<pre/>";
+//            print_r($this->name);die;
             $this->_user = User::findByName($this->name);
         }
         return $this->_user;
