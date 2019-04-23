@@ -59,7 +59,29 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['is_deleted', 'default', 'value' => self::STATUS_NO_DELETED],
-            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED, self::STATUS_YES_DELETED]],
+            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED]],
+        ];
+    }
+
+
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'ID',
+            'name' => '用户名',
+            'phone' => '电话',
+            'nickname' => '昵称',
+            'avatar' => '头像',
+            'email' => '邮箱',
+            'password' => '密码',
+            'auth_key' => 'Auth Key',
+            'introduction' => '简介',
+            'is_deleted' => '是否开启',
+            'last_login_ip' => '最后登录ip',
+            'qq_token' => 'qq授权',
+            'wechat_token' => '微信授权',
+            'create_time' => '创建时间',
+            'update_time' => '更新时间',
         ];
     }
 
@@ -220,5 +242,25 @@ class User extends ActiveRecord implements IdentityInterface
     {
         //随机生成密码盐12位
         $this->pwd_salt = Yii::$app->user->randomkeys(20);
+    }
+    
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 用户状态转换(用于下拉框)
+     */
+    public static function allIsDeleted()
+    {
+        return [self::STATUS_NO_DELETED=>'开启',self::STATUS_YES_DELETED=>'关闭'];
+    }
+
+
+    /**
+     * User: wangxiaoxiao
+     * escription: 用户状态 
+     */
+    public function getIsDeleted()
+    {
+        return $this->is_deleted == self::STATUS_NO_DELETED?'开启':'关闭';
     }
 }

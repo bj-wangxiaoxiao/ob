@@ -39,11 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'pwd_salt',
             'introduction',
             'last_login_ip',
-            ['attribute'=>'create_time',             // 格式化时间
-                'value'=>date('Y-m-d H:i:s',$model->create_time),
+            [   'attribute' =>  'create_time',             // 格式化时间
+                'format'    =>  ['date','php:Y-m-d H:i:s']
             ],
-            ['attribute'=>'update_time',             // 格式化时间
-                'value'=>date('Y-m-d H:i:s',$model->update_time),
+            [   'attribute' =>  'update_time',             // 格式化时间
+                'format'    =>  ['date','php:Y-m-d H:i:s']
             ],
         ],
     ]) ?>

@@ -7,16 +7,12 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = '用户';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -30,19 +26,26 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'phone',
             'nickname',
-            'avatar:ntext',
-            //'email:email',
-            //'password',
-            //'pwd_salt',
-            //'introduction',
-            //'is_deleted',
-            //'last_login_ip',
-            //'qq_token',
-            //'wechat_token',
-            //'create_time:datetime',
-            //'update_time:datetime',
+            [
+                    'attribute' => 'is_deleted',
+                    'value'     => 'IsDeleted',
+            ],
+            'last_login_ip',
+            [
+                'attribute' =>  'create_time',
+                'format'     =>  ['date','php:Y-m-d H:i:s']
+            ],
+            [
+                'attribute' =>  'update_time',
+                'format'     =>  ['date','php:Y-m-d H:i:s']
+            ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'  =>  '{update}',
+            ],
+
+
         ],
     ]); ?>
 

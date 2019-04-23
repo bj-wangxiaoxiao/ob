@@ -1,10 +1,15 @@
 <?php
-
+/**
+ * User: wangxiaoxiao
+ * Description: 后台用户模型
+ */
 namespace common\models;
 
 use Yii;
+use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 
 
 /**
@@ -25,8 +30,11 @@ use yii\db\ActiveRecord;
  * @property int $update_time 更新时间
  * @property string password_hash
  */
-class AdminUser extends ActiveRecord
+class AdminUser extends ActiveRecord implements IdentityInterface
 {
+    const STATUS_NO_DELETED = 0;
+    const STATUS_YES_DELETED = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -80,6 +88,116 @@ class AdminUser extends ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['admin_user_id' => $id,'is_deleted'=>self::STATUS_NO_DELETED]);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws NotSupportedException
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+
+    /**
+     * Finds user by name
+     *
+     * @param string $name
+     * @return static|null
+     */
+    public static function findByName($name)
+    {
+        return static::findOne(['name' => $name,'is_deleted'=>0]);
+    }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        if (!static::isPasswordResetTokenValid($token)) {
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'is_deleted' => self::STATUS_NO_DELETED,
+        ]);
+    }
+
+    /**
+     * Finds user by verification email token
+     *
+     * @param string $token verify email token
+     * @return static|null
+     */
+    public static function findByVerificationToken($token) {
+        return static::findOne([
+            'verification_token' => $token,
+            'is_deleted' => self::STATUS_NO_DELETED
+        ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return bool
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->getPrimaryKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Validates password
+     *
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->security->validatePassword($password, $this->password);
+    }
 
     /**
      * Generates password hash from password and sets it to the model
@@ -88,7 +206,46 @@ class AdminUser extends ActiveRecord
      */
     public function setPassword($password)
     {
-        return md5(Yii::$app->security->generatePasswordHash($password));
+        $this->password = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->password_reset_token = null;
+    }
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 生成密码盐
+     */
+    public function setPasswordSalt()
+    {
+        //随机生成密码盐12位
+        $this->pwd_salt = Yii::$app->user->randomkeys(20);
     }
 
 }

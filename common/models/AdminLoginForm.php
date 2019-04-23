@@ -1,19 +1,23 @@
 <?php
+/**
+ * User: wangxiaoxiao
+ * Description: 后台表单验证
+ */
 namespace common\models;
 
 use Yii;
 use yii\base\Model;
 
 /**
- * Login form
+ * Admin Login form
  */
-class LoginForm extends Model
+class AdminLoginForm extends Model
 {
     public $name;
     public $password;
     public $rememberMe = true;
 
-    private $_user;
+    private $_adminuser;
 
 
     /**
@@ -41,8 +45,8 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
+            $adminuser = $this->getUser();
+            if (!$adminuser || !$adminuser->ValidatePassword($this->password)) {
                 $this->addError($attribute, '请输入正确用户名和密码');
             }
         }
@@ -76,13 +80,13 @@ class LoginForm extends Model
     /**
      * Finds user by [[name]]
      *
-     * @return User|null
+     * @return AdminUser|null
      */
     protected function getUser()
     {
-        if ($this->_user === null) {
-            $this->_user = User::findByName($this->name);
+        if ($this->_adminuser === null) {
+            $this->_adminuser = AdminUser::findByName($this->name);
         }
-        return $this->_user;
+        return $this->_adminuser;
     }
 }
