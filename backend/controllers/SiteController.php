@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use common\models\AdminUser;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -73,7 +74,8 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+//        echo "<pre/>";
+//        print_r(Yii::$app->request->post());die;
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();

@@ -1,4 +1,8 @@
 <?php
+/**
+ * User: wangxiaoxiao
+ * Description: 目前前台用户模型
+ */
 namespace common\models;
 
 use Yii;
@@ -11,22 +15,23 @@ use yii\web\IdentityInterface;
  * User model
  *
  * @property integer $id
- * @property string $username
+ * @property string $name
  * @property string $password_hash
+ * @property string $pwd_salt
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
  * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer $is_deleted
+ * @property integer $last_login_ip
+ * @property integer $create_time
+ * @property integer $update_time
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_INACTIVE = 9;
-    const STATUS_ACTIVE = 10;
+    const STATUS_NO_DELETED = 0;
+    const STATUS_YES_DELETED = 1;
 
 
     /**
@@ -53,8 +58,8 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['is_deleted', 'default', 'value' => self::STATUS_NO_DELETED],
+            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED, self::STATUS_YES_DELETED]],
         ];
     }
 
@@ -63,7 +68,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['user_id' => $id,'is_deleted'=>self::STATUS_NO_DELETED]);
     }
 
     /**
@@ -75,14 +80,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Finds user by name
      *
-     * @param string $username
+     * @param string $name
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByName($name)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['name' => $name,'is_deleted'=>0]);
     }
 
     /**
@@ -99,7 +104,7 @@ class User extends ActiveRecord implements IdentityInterface
 
         return static::findOne([
             'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+            'is_deleted' => self::STATUS_NO_DELETED,
         ]);
     }
 
@@ -112,7 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
     public static function findByVerificationToken($token) {
         return static::findOne([
             'verification_token' => $token,
-            'status' => self::STATUS_INACTIVE
+            'is_deleted' => self::STATUS_NO_DELETED
         ]);
     }
 
@@ -165,7 +170,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     /**
@@ -175,7 +180,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
@@ -205,5 +210,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 生成密码盐
+     */
+    public function setPasswordSalt()
+    {
+        //随机生成密码盐12位
+        $this->pwd_salt = Yii::$app->user->randomkeys(20);
     }
 }

@@ -10,7 +10,7 @@ use common\models\User;
  */
 class SignupForm extends Model
 {
-    public $username;
+    public $name;
     public $email;
     public $password;
 
@@ -21,10 +21,10 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
-            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['name', 'trim'],
+            ['name', 'required'],
+            ['name', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This name has already been taken.'],
+            ['name', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
             ['email', 'required'],
@@ -36,6 +36,16 @@ class SignupForm extends Model
             ['password', 'string', 'min' => 6],
         ];
     }
+
+    public function attributeLabels()
+    {
+        return [
+            'name'  =>  '用户名',
+            'password'  =>  '密码',
+            'email'  =>  '邮箱'
+        ];
+    }
+
 
     /**
      * Signs user up.
@@ -49,12 +59,15 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $user->username = $this->username;
+        $user->name = $this->name;
         $user->email = $this->email;
+        $user->last_login_ip = $_SERVER["REMOTE_ADDR"];//获取登录ip
         $user->setPassword($this->password);
+        $user->setPasswordSalt();//设置密码盐
         $user->generateAuthKey();
+        $user->generatePasswordResetToken();
         $user->generateEmailVerificationToken();
-        return $user->save() && $this->sendEmail($user);
+        return $user->save();
 
     }
 
