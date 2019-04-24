@@ -5,6 +5,7 @@
  */
 namespace common\models;
 
+use common\lib\ObStrHelper;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -241,7 +242,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function setPasswordSalt()
     {
         //随机生成密码盐12位
-        $this->pwd_salt = $this->randomkeys(20);
+        $this->pwd_salt = ObStrHelper::randomkeys(20);
     }
     
 
@@ -262,21 +263,5 @@ class User extends ActiveRecord implements IdentityInterface
     public function getIsDeleted()
     {
         return $this->is_deleted == self::STATUS_NO_DELETED?'开启':'关闭';
-    }
-
-
-    /**
-     * User: wangxiaoxiao
-     * Description: 随机生成字母加数字组合
-     */
-    public function randomkeys($length)
-    {
-        $key = '';
-        $pattern = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ';
-        for($i=0;$i<$length;$i++)
-        {
-            $key .= $pattern{mt_rand(0,35)};    //生成php随机数
-        }
-        return $key;
     }
 }
