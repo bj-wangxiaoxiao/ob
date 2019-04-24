@@ -3,7 +3,7 @@
  * User: wangxiaoxiao
  * Description: 后台用户模型
  */
-namespace backend\models;
+namespace common\models;
 
 use Yii;
 use yii\base\NotSupportedException;
