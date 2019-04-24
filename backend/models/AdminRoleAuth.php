@@ -1,23 +1,23 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 
 /**
- * This is the model class for table "ob_admin_role_user".
+ * This is the model class for table "ob_admin_role_auth".
  *
  * @property int $role_id 角色id
- * @property int $admin_user_id 用户id
+ * @property int $auth_id 权限id
  */
-class AdminRoleUser extends \yii\db\ActiveRecord
+class AdminRoleAuth extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'ob_admin_role_user';
+        return 'ob_admin_role_auth';
     }
 
     /**
@@ -26,8 +26,8 @@ class AdminRoleUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['role_id', 'admin_user_id'], 'required'],
-            [['role_id', 'admin_user_id'], 'integer'],
+            [['role_id', 'auth_id'], 'required'],
+            [['role_id', 'auth_id'], 'integer'],
         ];
     }
 
@@ -38,7 +38,7 @@ class AdminRoleUser extends \yii\db\ActiveRecord
     {
         return [
             'role_id' => 'Role ID',
-            'admin_user_id' => 'Admin User ID',
+            'auth_id' => 'Auth ID',
         ];
     }
 }

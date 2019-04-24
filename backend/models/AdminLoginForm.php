@@ -3,7 +3,7 @@
  * User: wangxiaoxiao
  * Description: 后台表单验证
  */
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
