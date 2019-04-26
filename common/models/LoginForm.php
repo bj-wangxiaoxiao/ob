@@ -85,4 +85,18 @@ class LoginForm extends Model
         }
         return $this->_user;
     }
+    
+    
+    /**
+     * User: wangxiaoxiao
+     * Description: 更新用户最后登录ip
+     */
+    public function userinfoUpdate()
+    {
+        //获取用户信息
+        if (!empty($this->name)) {
+            $userInfo = $this->getUser();
+            User::userinfoUpdate($userInfo);
+        }
+    }
 }

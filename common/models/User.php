@@ -267,4 +267,19 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->is_deleted == self::STATUS_NO_DELETED?'开启':'关闭';
     }
+
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 更新用户状态
+     * @param object $userInfo
+     */
+    public static function userinfoUpdate($userInfo)
+    {
+        //获取ip
+        $ip = Yii::$app->getRequest()->getUserIP();
+        $user = static::findOne(['user_id'=>$userInfo->user_id]);
+        $user->last_login_ip = $ip;
+        $user->save();
+    }
 }
