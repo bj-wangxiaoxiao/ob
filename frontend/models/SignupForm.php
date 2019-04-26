@@ -13,6 +13,9 @@ class SignupForm extends Model
     public $name;
     public $email;
     public $password;
+    public $nickname;
+    public $phone;
+    public $introduction;
 
 
     /**
@@ -22,15 +25,19 @@ class SignupForm extends Model
     {
         return [
             ['name', 'trim'],
-            ['name', 'required'],
-            ['name', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This name has already been taken.'],
-            ['name', 'string', 'min' => 2, 'max' => 255],
+            [['name','nickname','introduction'], 'required'],
+            ['name', 'unique', 'targetClass' => '\common\models\User', 'message' => '该用户名存在,请重新输入'],
+            [['name','nickname'], 'string', 'min' => 2, 'max' => 255],
+
+            [['phone'], 'required'],
+            [['phone'], 'integer', 'min' => 11],
+            ['phone', 'unique', 'targetClass' => '\common\models\User', 'message' => '该手机号码存在,请重新输入'],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => '该邮箱存在,请重新输入'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -40,9 +47,12 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-            'name'  =>  '用户名',
-            'password'  =>  '密码',
-            'email'  =>  '邮箱'
+            'name'          =>  '用户名',
+            'password'      =>  '密码',
+            'email'         =>  '邮箱',
+            'nickname'      =>  '昵称',
+            'phone'         =>  '电话',
+            'introduction'  =>  '介绍'
         ];
     }
 
@@ -59,10 +69,13 @@ class SignupForm extends Model
         }
         
         $user = new User();
-        $user->name = $this->name;
-        $user->email = $this->email;
-        $user->last_login_ip = $_SERVER["REMOTE_ADDR"];//获取登录ip
-        $user->setPassword($this->password);
+        $user->name = $this->name;//用户名
+        $user->email = $this->email;//邮箱
+        $user->last_login_ip = Yii::$app->getRequest()->getUserIP();//获取登录ip
+        $user->nickname = $this->nickname;//昵称
+        $user->phone = $this->phone;//电话
+        $user->introduction = $this->introduction;//简介
+        $user->setPassword($this->password);//密码
         $user->setPasswordSalt();//设置密码盐
         $user->generateAuthKey();
         $user->generatePasswordResetToken();

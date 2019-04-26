@@ -17,11 +17,14 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $name
+ * @property string $nickname
+ * @property string $phone
  * @property string $password_hash
  * @property string $pwd_salt
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
+ * @property string $introduction
  * @property string $auth_key
  * @property integer $is_deleted
  * @property integer $last_login_ip
@@ -60,7 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             ['is_deleted', 'default', 'value' => self::STATUS_NO_DELETED],
-            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED]],
+            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED,self::STATUS_YES_DELETED]],
         ];
     }
 
@@ -68,21 +71,21 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'user_id' => 'ID',
-            'name' => '用户名',
-            'phone' => '电话',
-            'nickname' => '昵称',
-            'avatar' => '头像',
-            'email' => '邮箱',
-            'password' => '密码',
-            'auth_key' => 'Auth Key',
-            'introduction' => '简介',
-            'is_deleted' => '是否开启',
+            'user_id'       => 'ID',
+            'name'          => '用户名',
+            'phone'         => '电话',
+            'nickname'      => '昵称',
+            'avatar'        => '头像',
+            'email'         => '邮箱',
+            'password'      => '密码',
+            'auth_key'      => 'Auth Key',
+            'introduction'  => '简介',
+            'is_deleted'    => '是否开启',
             'last_login_ip' => '最后登录ip',
-            'qq_token' => 'qq授权',
-            'wechat_token' => '微信授权',
-            'create_time' => '创建时间',
-            'update_time' => '更新时间',
+            'qq_token'      => 'qq授权',
+            'wechat_token'  => '微信授权',
+            'create_time'   => '创建时间',
+            'update_time'   => '更新时间',
         ];
     }
 

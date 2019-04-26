@@ -21,6 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
 
+                <?= $form->field($model, 'nickname')->textInput(['maxlength'=>true]) ?>
+
+                <?= $form->field($model, 'phone')->textInput(['maxlength'=>true]) ?>
+
+                <?= $form->field($model, 'introduction')->textarea(['rows' => 6]) ?>
+
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'password')->passwordInput() ?>
