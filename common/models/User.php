@@ -113,7 +113,18 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByName($name)
     {
-        return static::findOne(['name' => $name,'is_deleted'=>0]);
+        return static::findOne(['name' => $name,'is_deleted'=>self::STATUS_NO_DELETED]);
+    }
+
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 查找用户状态
+     * @param string $name
+     */
+    public static function findByStatus($name)
+    {
+        return static::findOne(['name'=>$name]);
     }
 
     /**

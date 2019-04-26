@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use Yii;
@@ -42,8 +43,14 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, '请输入正确用户名和密码');
+            //判断用户状态
+            $userStatus = $this->getUserStatus();
+            if ($userStatus != 1) {
+                if (!$user || !$user->validatePassword($this->password)) {
+                    $this->addError($attribute, '请输入正确用户名和密码');
+                }
+            } else {
+                $this->addError($attribute, '你的账号存在异常,已经关停使用');
             }
         }
     }
@@ -52,9 +59,9 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'name'  =>  '用户名',
-            'password'  =>  '密码',
-            'rememberMe'  =>  '记住密码'
+            'name' => '用户名',
+            'password' => '密码',
+            'rememberMe' => '记住密码'
         ];
     }
 
@@ -69,7 +76,7 @@ class LoginForm extends Model
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
-        
+
         return false;
     }
 
@@ -83,10 +90,11 @@ class LoginForm extends Model
         if ($this->_user === null) {
             $this->_user = User::findByName($this->name);
         }
+
         return $this->_user;
     }
-    
-    
+
+
     /**
      * User: wangxiaoxiao
      * Description: 更新用户最后登录ip
@@ -98,5 +106,16 @@ class LoginForm extends Model
             $userInfo = $this->getUser();
             User::userinfoUpdate($userInfo);
         }
+    }
+
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 判断用户状态
+     */
+    private function getUserStatus()
+    {
+        $userInfo = User::findByStatus($this->name);
+        return $userInfo->is_deleted;
     }
 }
