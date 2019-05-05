@@ -254,5 +254,5 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         //随机生成密码盐12位
         $this->pwd_salt = Yii::$app->user->randomkeys(20);
     }
-
+    
 }
