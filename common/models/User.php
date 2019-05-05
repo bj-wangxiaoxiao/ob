@@ -15,7 +15,7 @@ use yii\web\IdentityInterface;
 /**
  * User model
  *
- * @property integer $id
+ * @property integer $user_id
  * @property string $name
  * @property string $nickname
  * @property string $phone
@@ -258,7 +258,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function setPasswordSalt()
     {
         //随机生成密码盐12位
-        $this->pwd_salt = ObStrHelper::randomkeys(20);
+        $this->pwd_salt = ObStrHelper::randomkeys(12);
     }
     
 

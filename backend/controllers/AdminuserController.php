@@ -5,6 +5,8 @@
  */
 namespace backend\controllers;
 
+use backend\models\SignupForm;
+use common\lib\ObStrHelper;
 use Yii;
 use common\models\AdminUser;
 use common\models\AdminuserSearch;
@@ -67,26 +69,14 @@ class AdminuserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new AdminUser();
-        if(Yii::$app->request->isPost){
-            //获取数据
-            $clientData = Yii::$app->request->post();
-           
-            //随机生成密码盐12位
-            $salt = Yii::$app->user->randomkeys(20);
-
-            $password = $model->setPassword($clientData['AdminUser']['password']);
-            $clientData['AdminUser']['password'] = $password;
-            $model->pwd_salt = $salt;
-
-            if ($model->load($clientData) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->admin_user_id]);
-            }
-        }else{
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $Adminuser = $model->signup()) {
+            return $this->redirect(['view', 'id' => $Adminuser->admin_user_id]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**

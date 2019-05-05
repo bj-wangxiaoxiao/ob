@@ -12,6 +12,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'defaultRoute'  =>  'site/index',
+    'language' => 'zh-CN',
     'modules' => [],
     'components' => [
         'request' => [

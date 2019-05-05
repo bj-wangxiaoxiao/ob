@@ -73,7 +73,7 @@ class AdminLoginForm extends Model
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
-        
+
         return false;
     }
 
@@ -88,5 +88,18 @@ class AdminLoginForm extends Model
             $this->_adminuser = AdminUser::findByName($this->name);
         }
         return $this->_adminuser;
+    }
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 更新用户最后登录ip
+     */
+    public function userinfoUpdate()
+    {
+        //获取用户信息
+        if (!empty($this->name)) {
+            $userInfo = $this->getUser();
+            AdminUser::userinfoUpdate($userInfo);
+        }
     }
 }

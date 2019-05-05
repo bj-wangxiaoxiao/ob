@@ -45,6 +45,7 @@ class LoginForm extends Model
             $user = $this->getUser();
             //判断用户状态
             $userStatus = $this->getUserStatus();
+
             if ($userStatus != 1) {
                 if (!$user || !$user->validatePassword($this->password)) {
                     $this->addError($attribute, '请输入正确用户名和密码');
@@ -116,6 +117,6 @@ class LoginForm extends Model
     private function getUserStatus()
     {
         $userInfo = User::findByStatus($this->name);
-        return $userInfo->is_deleted;
+        return $userInfo ? $userInfo->is_deleted : '';
     }
 }

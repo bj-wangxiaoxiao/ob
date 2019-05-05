@@ -36,11 +36,33 @@ $this->params['breadcrumbs'][] = $this->title;
             //'pwd_salt',
             //'introduction',
             //'is_deleted',
-            //'last_login_ip',
+            'last_login_ip',
             //'create_time:datetime',
             //'update_time:datetime',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+                'template'  =>  '{view} {update} {resetpwd} {privilege}',
+                'buttons'    =>  [
+                        'resetpwd'  =>  function($url,$model,$key)
+                        {
+                            $options = [
+                                'title' => Yii::t('yii','Repwd'),
+                                'aria-label'    =>  Yii::t('yii','Repwd'),
+                                'data-pjax'     =>  '0'
+                            ];
+                            return Html::a('<span class="glyphicon glyphicon-lock"></span>',$url,$options);
+                        },
+                        'privilege' =>  function($url,$model,$key)
+                        {
+                            $options = [
+                                'title' => Yii::t('yii','Auth'),
+                                'aria-label'    =>  Yii::t('yii','Auth'),
+                                'data-pjax'     =>  '0'
+                            ];
+                            return Html::a('<span class="glyphicon glyphicon-user"></span>',$url,$options);
+                        },
+                ]
+            ],
         ],
     ]); ?>
 

@@ -5,6 +5,7 @@
  */
 namespace common\models;
 
+use common\lib\ObStrHelper;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -61,12 +62,8 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['name', 'email', 'password'], 'required'],
-//            ['email', 'email'],
-            [['avatar'], 'string'],
-            [['is_deleted'], 'integer'],
-            [['name', 'phone', 'nickname', 'email', 'password', 'introduction'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 32],
+            ['is_deleted', 'default', 'value' => self::STATUS_NO_DELETED],
+            ['is_deleted', 'in', 'range' => [self::STATUS_NO_DELETED,self::STATUS_YES_DELETED]],
         ];
     }
 
@@ -88,7 +85,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'password_reset_token'  => 'Password Reset Token',
             'pwd_salt'              => '密码盐',
             'introduction'          => '简介',
-            'is_deleted'            => '是否删除',
+            'is_deleted'            => '是否开启',
             'last_login_ip'         => '最后一次登陆ip',
             'create_time'           => '创建时间',
             'update_time'           => '更新时间',
@@ -238,6 +235,16 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * User: wangxiaoxiao
+     * Description: 生成密码盐
+     */
+    public function setPasswordSalt()
+    {
+        //随机生成密码盐12位
+        $this->pwd_salt = ObStrHelper::randomkeys(12);
+    }
+
+    /**
      * Removes password reset token
      */
     public function removePasswordResetToken()
@@ -245,14 +252,38 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+
     /**
      * User: wangxiaoxiao
-     * Description: 生成密码盐
+     * Description: 用户状态转换(用于下拉框)
      */
-    public function setPasswordSalt()
+    public static function allIsDeleted()
     {
-        //随机生成密码盐12位
-        $this->pwd_salt = Yii::$app->user->randomkeys(20);
+        return [self::STATUS_NO_DELETED=>'开启',self::STATUS_YES_DELETED=>'关闭'];
+    }
+
+
+    /**
+     * User: wangxiaoxiao
+     * escription: 用户状态
+     */
+    public function getIsDeleted()
+    {
+        return $this->is_deleted == self::STATUS_NO_DELETED?'开启':'关闭';
+    }
+
+    /**
+     * User: wangxiaoxiao
+     * Description: 更新用户状态
+     * @param object $userInfo
+     */
+    public static function userinfoUpdate($userInfo)
+    {
+        //获取ip
+        $ip = Yii::$app->getRequest()->getUserIP();
+        $user = static::findOne(['admin_user_id'=>$userInfo->admin_user_id]);
+        $user->last_login_ip = $ip;
+        $user->save();
     }
 
 }

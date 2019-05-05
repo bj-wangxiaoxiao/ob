@@ -1,5 +1,7 @@
 <?php
 
+use backend\models\SignupForm;
+use common\models\AdminUser;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -24,9 +26,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 're_password')->passwordInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'introduction')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'is_deleted')->textInput() ?>
+    <?= $form->field($model, 'is_deleted')->dropDownList(SignupForm::allIsDeleted(),['prompt'=>'请选择状态']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('保存', ['class' => 'btn btn-success']) ?>

@@ -77,6 +77,8 @@ class SiteController extends Controller
 
         $model = new AdminLoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            //更新用户ip
+            $model->userinfoUpdate();
             return $this->goBack();
         } else {
             $model->password = '';
