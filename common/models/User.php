@@ -71,21 +71,23 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'user_id'       => 'ID',
-            'name'          => '用户名',
-            'phone'         => '电话',
-            'nickname'      => '昵称',
-            'avatar'        => '头像',
-            'email'         => '邮箱',
-            'password'      => '密码',
-            'auth_key'      => 'Auth Key',
-            'introduction'  => '简介',
-            'is_deleted'    => '是否开启',
-            'last_login_ip' => '最后登录ip',
-            'qq_token'      => 'qq授权',
-            'wechat_token'  => '微信授权',
-            'create_time'   => '创建时间',
-            'update_time'   => '更新时间',
+            'user_id'               => 'ID',
+            'name'                  => '用户名',
+            'phone'                 => '电话',
+            'nickname'              => '昵称',
+            'avatar'                => '头像',
+            'email'                 => '邮箱',
+            'password'              => '密码',
+            'auth_key'              => 'Auth Key',
+            'verification_token'    => 'Verification Token',
+            'password_reset_token'  => 'Password Reset Token',
+            'introduction'          => '简介',
+            'is_deleted'            => '是否开启',
+            'last_login_ip'         => '最后登录ip',
+            'qq_token'              => 'qq授权',
+            'wechat_token'          => '微信授权',
+            'create_time'           => '创建时间',
+            'update_time'           => '更新时间',
         ];
     }
 

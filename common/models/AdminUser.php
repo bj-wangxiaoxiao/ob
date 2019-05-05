@@ -22,6 +22,9 @@ use yii\web\IdentityInterface;
  * @property string $avatar 头像
  * @property string $email 邮箱
  * @property string $password 密码
+ * @property string $auth_key
+ * @property string $verification_token
+ * @property string $password_reset_token
  * @property string $pwd_salt 密码盐，每个用户都不一样
  * @property string $introduction 自我介绍
  * @property int $is_deleted 是否删除：0、否；1、是，默认为0
@@ -63,6 +66,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             [['avatar'], 'string'],
             [['is_deleted'], 'integer'],
             [['name', 'phone', 'nickname', 'email', 'password', 'introduction'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
         ];
     }
 
@@ -72,19 +76,22 @@ class AdminUser extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'admin_user_id' => 'ID',
-            'name' => '姓名',
-            'phone' => '电话',
-            'nickname' => '昵称',
-            'avatar' => '头像',
-            'email' => '邮箱',
-            'password' => '密码',
-            'pwd_salt' => '密码盐',
-            'introduction' => '简介',
-            'is_deleted' => '是否删除',
-            'last_login_ip' => '最后一次登陆ip',
-            'create_time' => '创建时间',
-            'update_time' => '更新时间',
+            'admin_user_id'         => 'ID',
+            'name'                  => '姓名',
+            'phone'                 => '电话',
+            'nickname'              => '昵称',
+            'avatar'                => '头像',
+            'email'                 => '邮箱',
+            'password'              => '密码',
+            'auth_key'              => '认证钥匙',
+            'verification_token'    => 'Verification Token',
+            'password_reset_token'  => 'Password Reset Token',
+            'pwd_salt'              => '密码盐',
+            'introduction'          => '简介',
+            'is_deleted'            => '是否删除',
+            'last_login_ip'         => '最后一次登陆ip',
+            'create_time'           => '创建时间',
+            'update_time'           => '更新时间',
         ];
     }
 
