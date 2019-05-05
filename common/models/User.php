@@ -49,12 +49,21 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
+	public function behaviors()
+	{
+		return array_merge(
+			[
+				[
+					'class' => TimestampBehavior::className(),
+					'attributes' => [
+						ActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
+						ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
+					],
+					// if you're using datetime instead of UNIX timestamp:
+					// 'value' => new Expression('NOW()'),
+				],
+			], parent::behaviors());
+	}
 
     /**
      * {@inheritdoc}

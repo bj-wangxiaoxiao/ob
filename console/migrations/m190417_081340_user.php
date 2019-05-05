@@ -23,7 +23,7 @@ class m190417_081340_user extends Migration
 			'user_id' => $this->primaryKey()->comment('唯一键'),//默认自动增长AUTO_INCREMENT
 			'name'=>$this->string(255)->notNull()->comment('姓名'),
 			'phone'=>$this->string(255)->defaultValue('')->comment('手机号码'),
-			'nickname'=>$this->string(255)->comment('别名'),
+			'nickname'=>$this->string(255)->defaultValue('')->comment('别名'),
 			'avatar'=>$this->text()->comment('头像'),
 			'email'=>$this->string(255)->notNull()->comment('邮箱'),
 			'password'=>$this->string(255)->notNull()->comment('密码'),

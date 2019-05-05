@@ -285,5 +285,5 @@ class AdminUser extends ActiveRecord implements IdentityInterface
         $user->last_login_ip = $ip;
         $user->save();
     }
-
+    
 }

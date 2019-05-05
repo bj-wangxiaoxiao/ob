@@ -57,8 +57,8 @@ class Article extends \yii\db\ActiveRecord
         return [
             'article_id' => 'ID',
             'cate_id' => '文章分类',
-            'user_id' => 'User Id',
-            'user_type' => 'User Type',
+            'user_id' => '用户id',
+            'user_type' => '用户类型',
             'thumbnail' => '缩略图',
             'writer' => '作者',
             'title' => '文章标题',
