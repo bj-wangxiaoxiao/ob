@@ -71,8 +71,16 @@ class AdminuserController extends Controller
     public function actionCreate()
     {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $Adminuser = $model->signup()) {
-            return $this->redirect(['view', 'id' => $Adminuser->admin_user_id]);
+	    $model->setScenario(SignupForm::SCENARIO_TEST);
+	    $model->load(Yii::$app->request->post());
+        echo "<pre>";
+	    print_r($model->getAttributes());
+	    var_dump($model->validate());
+	    print_r($model->getErrors());
+	    die;
+	    if ($model->load(Yii::$app->request->post()) && $Adminuser = $model->signup()) {
+		
+		    return $this->redirect(['view', 'id' => $Adminuser->admin_user_id]);
         }
 
         return $this->render('create', [

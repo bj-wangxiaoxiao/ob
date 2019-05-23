@@ -27,7 +27,7 @@ class SignupForm extends Model
     public $rememberMe = true;
 
     private $_adminuser;
-
+	const SCENARIO_TEST = 'scenario_test';
 
     /**
      * {@inheritdoc}
@@ -50,13 +50,20 @@ class SignupForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\common\models\AdminUser', 'message' => '该邮箱存在,请重新输入'],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
-            ['re_password', 'compare', 'compareAttribute' => 'password','message'=>'两次密码输入不一致!'],
+            ['password', 'required','on'=>self::SCENARIO_TEST],//只有当test场景生效时，才会校验
+//            ['password', 'string', 'min' => 6],
+//            ['re_password', 'compare', 'compareAttribute' => 'password','message'=>'两次密码输入不一致!'],
         ];
     }
-
-    /**
+    
+    public function scenarios()
+    {
+	    $scenarios = parent::scenarios();
+	    $scenarios[self::SCENARIO_TEST] =['password'];//当前场景下需要校验的字段
+	    return $scenarios;
+    }
+	
+	/**
      * Validates the password.
      * This method serves as the inline validation for password.
      *
