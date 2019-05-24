@@ -19,6 +19,7 @@ return [
 				    'class' => 'yii\log\FileTarget',
 				    'levels' => ['info', 'warning','trace'],
 				    'logFile'=>'@runtime/logs/app_'.date('Ymd').'.log',
+				    'logVars' => ['_POST'],
 			    ],
 			    [
 				    'class' => 'yii\log\DbTarget',

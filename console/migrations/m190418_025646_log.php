@@ -10,7 +10,7 @@ class m190418_025646_log extends Migration
     /**
      * {@inheritdoc}
      */
-	public $tableName = '{{%ob_log}}';
+	public $tableName = '{{%sys_log}}';
 	
 	public function safeUp()
 	{

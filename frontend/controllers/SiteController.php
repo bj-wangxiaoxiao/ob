@@ -75,6 +75,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
 //        $this->layout = 'head';
+	    Yii::error('dsdfadfsdfadfadsf');
         return $this->render('index');
     }
 
