@@ -45,7 +45,11 @@ return [
             'rules' => [
             ],
         ],
-
     ],
     'params' => $params,
+	'modules' => [
+		'test' => [
+			'class' => 'app\modules\test\Test',
+		],
+	],
 ];

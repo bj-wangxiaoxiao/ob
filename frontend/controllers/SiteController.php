@@ -75,9 +75,19 @@ class SiteController extends Controller
     public function actionIndex()
     {
 //        $this->layout = 'head';
-	    Yii::error('dsdfadfsdfadfadsf');
         return $this->render('index');
     }
+	
+	/**
+	 * 测试模块间的调用
+	 * @return mixed
+	 * @throws \yii\base\InvalidRouteException
+	 */
+	public function actionTestModule()
+	{
+		$test = Yii::$app->getModule('test');
+		return $test->runAction('default/index');
+	}
 
     /**
      * Logs in a user.
