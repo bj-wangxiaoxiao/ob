@@ -37,3 +37,9 @@ git@github.com:bj-wangxiaoxiao/ob.git
  #数据库详情
      后台表开头：ob_admin_
      前台表开头：ob_
+     
+ #陈杰开发进度
+    权限开发尚未完成的
+        1.角色绑定权限的页面
+        2.初始化一个超级管理员的账号：admin，密码：obadmin@123
+        
