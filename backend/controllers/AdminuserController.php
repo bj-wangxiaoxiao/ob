@@ -6,7 +6,6 @@
 namespace backend\controllers;
 
 use backend\models\SignupForm;
-use common\lib\ObStrHelper;
 use common\models\AuthAssignment;
 use common\models\AuthItem;
 use Yii;
@@ -19,7 +18,7 @@ use yii\filters\VerbFilter;
 /**
  * AdminuserSearchController implements the CRUD actions for AdminUser model.
  */
-class AdminuserController extends Controller
+class AdminuserController extends AdminBaseController
 {
     /**
      * {@inheritdoc}
@@ -135,7 +134,9 @@ class AdminuserController extends Controller
 		//step1. 找出所有权限,提供给checkboxlist
 		$allPrivileges = AuthItem::find()->select(['name','description'])
 			->where(['type'=>1])->orderBy('description')->all();
-		
+		if(empty($allPrivileges)){
+			throw new NotFoundHttpException('当前系统无角色存在，请联系开发人员初始化！');
+		}
 		foreach ($allPrivileges as $pri)
 		{
 			$allPrivilegesArray[$pri->name]=$pri->description;
@@ -174,7 +175,6 @@ class AdminuserController extends Controller
 		}
 		
 		//step4. 渲染checkBoxList表单
-		
 		return $this->render('privilege',['id'=>$id,'AuthAssignmentArray'=>$AuthAssignmentsArray,
 			'allPrivilegesArray'=>$allPrivilegesArray]);
 		

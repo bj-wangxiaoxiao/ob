@@ -16,7 +16,7 @@ use yii\filters\VerbFilter;
 /**
  * ArticleController implements the CRUD actions for Article model.
  */
-class ArticleController extends Controller
+class ArticleController extends AdminBaseController
 {
     /**
      * {@inheritdoc}
@@ -68,9 +68,6 @@ class ArticleController extends Controller
      */
     public function actionCreate()
     {
-    	if(!Yii::$app->user->can('createPost')){
-		    throw new ForbiddenHttpException('尚无文章新增权限');
-	    }
         $model = new Article();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -91,9 +88,6 @@ class ArticleController extends Controller
      */
     public function actionUpdate($id)
     {
-	    if(!Yii::$app->user->can('updatePost')){
-		    throw new ForbiddenHttpException('尚无文章修改权限');
-	    }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -114,9 +108,7 @@ class ArticleController extends Controller
      */
     public function actionDelete($id)
     {
-	    if(!Yii::$app->user->can('deletePost')){
-		    throw new ForbiddenHttpException('尚无文章删除权限');
-	    }
+    	
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
