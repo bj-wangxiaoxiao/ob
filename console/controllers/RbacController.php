@@ -26,6 +26,7 @@ class RbacController extends Controller
 	}
 	
 	/**
+	 * init rbac auth ,will clear all old data,please see AuthConfig to diy your auth info
 	 * @throws \Exception
 	 */
 	public function actionInit()
