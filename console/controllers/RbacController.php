@@ -3,12 +3,11 @@
 namespace console\controllers;
 
 use backend\config\AuthConfig;
-use common\models\AuthAssignment;
-use common\models\AuthItem;
+use backend\models\AuthAssignment;
+use backend\models\AuthItem;
 use Yii;
 use yii\base\Exception;
 use yii\console\Controller;
-use yii\rbac\DbManager;
 use yii\rbac\Item;
 use yii\rbac\ManagerInterface;
 

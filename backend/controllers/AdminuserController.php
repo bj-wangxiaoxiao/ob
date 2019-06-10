@@ -5,9 +5,9 @@
  */
 namespace backend\controllers;
 
+use backend\models\AuthAssignment;
 use backend\models\SignupForm;
-use common\models\AuthAssignment;
-use common\models\AuthItem;
+use backend\models\AuthItem;
 use Yii;
 use common\models\AdminUser;
 use common\models\AdminuserSearch;

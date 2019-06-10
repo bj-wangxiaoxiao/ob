@@ -38,6 +38,10 @@ class AuthConfig
 			'desc'=>'用户',
 			'extraHandle'=>[],
 		],
+		'auth-item'=>[
+			'desc'=>'角色',
+			'extraHandle'=>[],
+		],
 	];
 	
 	/**
