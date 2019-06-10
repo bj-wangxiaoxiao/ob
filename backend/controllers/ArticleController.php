@@ -8,6 +8,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Article;
 use common\models\ArticleSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -30,6 +31,36 @@ class ArticleController extends AdminBaseController
                     'delete' => ['POST'],
                 ],
             ],
+	        'access' => [
+		        'class' => AccessControl::className(),
+//		        'rules' => [
+//			        [
+//				        'allow' => true,
+//				        'actions' => ['index'],
+//				        'roles' => ['managePost'],
+//			        ],
+//			        [
+//				        'allow' => true,
+//				        'actions' => ['view'],
+//				        'roles' => ['viewPost'],
+//			        ],
+//			        [
+//				        'allow' => true,
+//				        'actions' => ['create'],
+//				        'roles' => ['createPost'],
+//			        ],
+//			        [
+//				        'allow' => true,
+//				        'actions' => ['update'],
+//				        'roles' => ['updatePost'],
+//			        ],
+//			        [
+//				        'allow' => true,
+//				        'actions' => ['delete'],
+//				        'roles' => ['deletePost'],
+//			        ],
+//		        ],
+	        ],
         ];
     }
 
