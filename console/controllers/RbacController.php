@@ -166,12 +166,6 @@ class RbacController extends Controller
 	 */
 	private function _addAssignment(ManagerInterface $amg)
 	{
-		$one = AuthAssignment::find()->one();
-		if($one){
-			$this->msg = 'SuperAdmin has been set !';
-			$this->outputInfo();
-			return false;
-		}
 		$succ = $error = 0;
 		$super_admin_id = AuthConfig::getSuperAdminId();
 		if(empty($super_admin_id)){
@@ -183,9 +177,16 @@ class RbacController extends Controller
 		$per = $amg->getPermissions();
 		
 		//给第一个用户添加超管角色
-		$r_assign = $amg->assign($super_role,$super_admin_id);
-		$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin} success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
-		$this->outputInfo();
+		$one = AuthAssignment::findOne(['item_name'=>AuthConfig::SUPER_ADMIN]);
+		if($one){
+			$this->msg = 'SuperAdmin has been set !';
+			$this->outputInfo();
+		}else{
+			$r_assign = $amg->assign($super_role,$super_admin_id);
+			$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin} success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
+			$this->outputInfo();
+		}
+		
 		
 		//给超管角色分配所有权限
 		foreach ($per as $item) {
