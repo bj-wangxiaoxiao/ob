@@ -48,7 +48,14 @@ class AdminuserController extends AdminBaseController
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionTest(){
+    	echo 1;die;
+    }
 
+    public function actionAssignment(){
+	    return $this->render('assignment');
+    }
     /**
      * Displays a single AdminUser model.
      * @param integer $id

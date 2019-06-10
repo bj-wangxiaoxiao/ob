@@ -31,8 +31,8 @@ class ArticleController extends AdminBaseController
                     'delete' => ['POST'],
                 ],
             ],
-	        'access' => [
-		        'class' => AccessControl::className(),
+//	        'access' => [
+//		        'class' => AccessControl::className(),
 //		        'rules' => [
 //			        [
 //				        'allow' => true,
@@ -60,7 +60,7 @@ class ArticleController extends AdminBaseController
 //				        'roles' => ['deletePost'],
 //			        ],
 //		        ],
-	        ],
+//	        ],
         ];
     }
 

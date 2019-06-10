@@ -3,8 +3,10 @@
 namespace console\controllers;
 
 use backend\config\AuthConfig;
+use common\models\AuthAssignment;
 use common\models\AuthItem;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
 use yii\rbac\DbManager;
 use yii\rbac\Item;
@@ -123,7 +125,6 @@ class RbacController extends Controller
 		//1、清空所有的角色
 		AuthItem::deleteAll(['type' => Item::TYPE_ROLE]);
 		//循环配置文件，逐一添加需要的角色
-		
 		foreach ($this->role as $name => $info) {
 			$desc = $info['desc'];
 			$parent = $info['parent'];
@@ -135,7 +136,12 @@ class RbacController extends Controller
 			 */
 			if($parent){
 				$parent_role = $amg->getRole($parent);
-				$amg->addChild($parent_role,$role);
+				try {
+					$amg->addChild($parent_role, $role);
+				} catch (Exception $e) {
+					$this->msg = 'parent has been added';
+					$this->outputInfo();
+				}
 				$this->msg = "add {$parent_role->name}'s child [$name] success !";
 				$this->outputInfo();
 			}
@@ -160,6 +166,12 @@ class RbacController extends Controller
 	 */
 	private function _addAssignment(ManagerInterface $amg)
 	{
+		$one = AuthAssignment::find()->one();
+		if($one){
+			$this->msg = 'SuperAdmin has been set !';
+			$this->outputInfo();
+			return false;
+		}
 		$succ = $error = 0;
 		$super_admin_id = AuthConfig::getSuperAdminId();
 		if(empty($super_admin_id)){
