@@ -21,4 +21,27 @@ class ObStrHelper{
         }
         return $key;
     }
+    
+    public static function Xml2Array($file_content){
+	    return json_decode(json_encode(simplexml_load_string($file_content, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+    }
+	
+	public static function handleErrors2Str($errors){
+		if(empty($errors)){
+			return '';
+		}
+		
+		if(is_string($errors)){
+			return $errors;
+		}
+		$msg = '';
+		if(is_array($errors)){
+			foreach ($errors as $error) {
+				$msg .= '【'. implode(' | ',$error).'】';
+			}
+		}
+		
+		return $msg;
+	}
+	
 }

@@ -15,8 +15,9 @@ use yii\log\Logger;
 
 class ObLogger
 {
-	public static function info($message,$cate='runtime'){
+	public static function info($message,$desc = '',$cate='runtime'){
 		$message = is_array($message) ? Json::encode($message) : $message;
+		$message = $desc ? $desc.'：'.$message : $message;
 		Yii::info($message,$cate);
 	}
 }
