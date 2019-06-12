@@ -129,6 +129,7 @@ class WxController extends BaseController
 	 */
 	private function _handleUserMsg()
 	{
+		$this->backInfo = $this->msg['content'];
 		switch ($this->msg['content']) {
 			case '喝水':
 				$this->backInfo = '收到，以后将会定时提醒您喝水';
