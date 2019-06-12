@@ -31,6 +31,23 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+	
+	    'log' => [
+		    'traceLevel' => YII_DEBUG ? 3 : 0,
+		    'targets' => [
+			    [
+				    'class' => 'yii\log\FileTarget',
+				    'levels' => ['info'],
+				    'categories'=>['runtime'],
+				    'logFile'=>'@runtime/logs/backend_'.date('Ymd').'.log',
+				    'logVars' => ['_POST'],
+			    ],
+			    [
+				    'class' => 'yii\log\DbTarget',
+				    'levels' => ['error','warning'],
+			    ],
+		    ],
+	    ],
 
         'urlManager' => [
             'enablePrettyUrl' => true,
