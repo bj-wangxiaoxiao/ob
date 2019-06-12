@@ -31,21 +31,22 @@ class WxController extends BaseController
 			$this->_checkSignature();
 		}
 		//2、获取微信用户发送过来的信息，xml格式，转换成array
-//		$fileContent = file_get_contents("php://input");
-//		if (empty($fileContent)) {
-//			ObLogger::info('微信返回信息为空！');
-//			die;
-//		}
-//		$arr_wx_param = ObStrHelper::Xml2Array($fileContent);
-//		ObLogger::info($arr_wx_param, "微信发送的信息");
-		$arr_wx_param = [
-			"ToUserName" => "gh_2d74316a329c",
-			"FromUserName" => "oK_2SwnIWZnAWJmFylRG85BHYn5A",
-			"CreateTime" => "1510820250",
-			"MsgType" => "text",
-			"Content" => "5435",
-			"MsgId" => "6488923564304268875"
-		];
+		$fileContent = file_get_contents("php://input");
+		if (empty($fileContent)) {
+			ObLogger::info('微信返回信息为空！');
+			die;
+		}
+		$arr_wx_param = ObStrHelper::Xml2Array($fileContent);
+		ObLogger::info($arr_wx_param, "微信发送的信息");
+		//测试使用
+//		$arr_wx_param = [
+//			"ToUserName" => "gh_2d74316a329c",
+//			"FromUserName" => "oK_2SwnIWZnAWJmFylRG85BHYn5A",
+//			"CreateTime" => "1510820250",
+//			"MsgType" => "text",
+//			"Content" => "5435",
+//			"MsgId" => "6488923564304268875"
+//		];
 		//3、获取的信息存到msg里
 		$this->msg['msg_id'] = $arr_wx_param['MsgId'];
 		$this->msg['content'] = $arr_wx_param['Content'];
