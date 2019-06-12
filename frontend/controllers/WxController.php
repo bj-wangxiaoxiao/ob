@@ -148,14 +148,17 @@ class WxController extends BaseController
 	private function _addUser()
 	{
 		$r = false;
+		$user_exist = true;
 		$user = WxUser::findOne(['open_id' => $this->msg['open_id']]);
 		if (!$user) {
+			$user_exist = false;
 			$user = new WxUser();
 			$user->open_id = $this->msg['open_id'];
 			$r = $user->save();
 		}
 		
 		$debug = [
+			'user_exist'=>$user_exist,
 			'add_result' => $r,
 			'open_id' => $this->msg['open_id']
 		];
