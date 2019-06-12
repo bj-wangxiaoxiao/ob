@@ -9,4 +9,5 @@ namespace frontend\config;
 class FrontendConfig
 {
 	const WX_USER_REMIND_TRUE = 1;//提醒用户喝水
+	const WX_USER_REMIND_FALSE = 0;//提醒用户喝水
 }

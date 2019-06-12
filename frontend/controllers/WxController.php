@@ -138,6 +138,13 @@ class WxController extends BaseController
 				$r = $wx_user->save();
 				ObLogger::info($r, '用户设置提醒结果');
 				break;
+			case '不喝水':
+				$this->backInfo = '收到，关闭喝水提醒';
+				$wx_user = WxUser::findOne(['open_id' => $this->msg['open_id']]);
+				$wx_user->remind = FrontendConfig::WX_USER_REMIND_FALSE;//不提醒喝水
+				$r = $wx_user->save();
+				ObLogger::info($r, '用户设置不提醒结果');
+				break;
 		}
 		
 		$this->_responseMsg($this->backInfo);
