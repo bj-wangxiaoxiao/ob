@@ -1,4 +1,5 @@
 <?php
+$log = require_once 'log-config.php';
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -12,20 +13,6 @@ return [
 	    'authManager' => [
     			'class' =>'yii\rbac\DbManager',
     	],
-	    'log' => [
-		    'traceLevel' => YII_DEBUG ? 3 : 0,
-		    'targets' => [
-			    [
-				    'class' => 'yii\log\FileTarget',
-				    'levels' => ['info', 'warning','trace'],
-				    'logFile'=>'@runtime/logs/app_'.date('Ymd').'.log',
-				    'logVars' => ['_POST'],
-			    ],
-			    [
-				    'class' => 'yii\log\DbTarget',
-				    'levels' => ['error','warning'],
-			    ],
-		    ],
-	    ],
+	    'log' => $log,
     ],
 ];

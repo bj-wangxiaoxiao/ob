@@ -26,15 +26,16 @@ return [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
+	    //前后端日志都由common/config/log-config.php控制
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                ],
+//            ],
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
