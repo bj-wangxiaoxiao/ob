@@ -14,6 +14,13 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'defaultRoute'  =>  'site/index',//设置前台默认路由
     'components' => [
+	    'wechat' => [
+		    'class' => 'callmez\wechat\sdk\MpWechat',
+		    'appId' => 'wxe383268e2e7f057c',
+		    'appSecret' => '10a3c355837561105f2779a59579f11a',
+		    'encodingAesKey' => 'PPTZG11oYygrOtGG2IZjrnJQj5byIROYv422fFUQb8q',
+		    'token' => 'obtoken'
+	    ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

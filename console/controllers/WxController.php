@@ -10,6 +10,7 @@ namespace console\controllers;
 
 
 use frontend\models\WxUser;
+use Kcloze\Bot\Robots;
 use yii\console\Controller;
 
 class WxController extends Controller
@@ -17,5 +18,9 @@ class WxController extends Controller
 	public function actionCrontab(){
 		$users = WxUser::find()->where(['remind'=>1])->asArray()->all();
 		print_r($users);
+	}
+	
+	public function actionRobot(){
+
 	}
 }

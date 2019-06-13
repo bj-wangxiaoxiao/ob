@@ -24,6 +24,21 @@ class WxController extends BaseController
 	private $msg;
 	private $backInfo;
 	
+	public function actionSetTemplateIndustry(){
+		$wechat = Yii::$app->wechat;
+		$data = [
+			'filter'=>[
+				'is_to_all'=>false,
+				'tag_id'=>'测试',
+			],
+			'text'=>[
+				'content'=>'起来喝水111！',
+			],
+			'msgtype'=>'text',
+		];
+		$r = $wechat->sendAll($data);
+		var_dump($r);die;
+	}
 	public function actionCallback()
 	{
 		//1、定位服务器的校验
