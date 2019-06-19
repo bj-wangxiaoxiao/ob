@@ -37,3 +37,8 @@ git@github.com:bj-wangxiaoxiao/ob.git
  #数据库详情
      后台表开头：ob_admin_
      前台表开头：ob_
+     
+ #添加管理员命令
+     php yii admin-user/add
+     
+  
