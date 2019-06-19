@@ -24,7 +24,7 @@ class AuthConfig
 	private static  $auth = [
 		'adminuser'=>[
 			'desc'=>'管理员',
-			'extraHandle'=>['privilege'=>'修改权限','assignment'=>'角色权限分配'],//设置其他的不在$handle里的功能名称
+			'extraHandle'=>['privilege'=>'修改权限','assignment'=>'角色权限分配','resetpwd'=>'修改密码'],//设置其他的不在$handle里的功能名称
 		],
 		'Article'=>[
 			'desc'=>'文章',

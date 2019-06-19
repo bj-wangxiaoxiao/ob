@@ -38,7 +38,9 @@ git@github.com:bj-wangxiaoxiao/ob.git
      后台表开头：ob_admin_
      前台表开头：ob_
      
- #添加管理员命令
-     php yii admin-user/add
+ #初始化系统时：
+    1.添加管理员命令：php yii admin-user/add
+    2.给新增管理员赋予权限： php yii rbac/init
+     
      
   
