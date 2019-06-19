@@ -41,7 +41,7 @@ class AuthConfig
 		'auth-item'=>[
 			'desc'=>'角色',
 			'extraHandle'=>[],
-		],
+		],//sdfadsjfkajdskf
 	];
 	
 	/**
