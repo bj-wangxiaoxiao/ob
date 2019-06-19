@@ -68,9 +68,10 @@ class ArticleController extends AdminBaseController
      */
     public function actionCreate()
     {
-        $model = new Article();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+	    $model = new Article();
+	    $model->load(Yii::$app->request->post());
+	    
+	    if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->article_id]);
         }
 

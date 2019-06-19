@@ -13,6 +13,22 @@ return [
 	    'authManager' => [
     			'class' =>'yii\rbac\DbManager',
     	],
-	    'log' => $log,
+	    //log前后台单独配
+//	    'log' => [
+//		    'traceLevel' => YII_DEBUG ? 3 : 0,
+//		    'targets' => [
+//			    [
+//				    'class' => 'yii\log\FileTarget',
+//				    'levels' => ['info', 'warning','trace'],
+//				    'categories'=>['runtime'],
+//				    'logFile'=>'@runtime/logs/app_'.date('Ymd').'.log',
+//				    'logVars' => ['_POST'],
+//			    ],
+//			    [
+//				    'class' => 'yii\log\DbTarget',
+//				    'levels' => ['error','warning'],
+//			    ],
+//		    ],
+//	    ],
     ],
 ];
