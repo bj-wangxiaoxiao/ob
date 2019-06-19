@@ -9,7 +9,7 @@
 namespace backend\controllers;
 
 
-use common\models\AuthItem;
+use backend\models\AuthItem;
 use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;

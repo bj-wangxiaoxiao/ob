@@ -197,4 +197,5 @@ class RbacController extends Controller
 		$this->msg = "Set all permissions for super administrators error count : [{$error}]";
 		$this->outputInfo();
 	}
+	
 }

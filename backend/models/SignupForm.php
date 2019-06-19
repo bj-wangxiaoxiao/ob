@@ -36,7 +36,7 @@ class SignupForm extends Model
     {
         return [
             ['name', 'trim'],
-            [['name','nickname','introduction'], 'required'],
+            [['name','nickname'], 'required'],
             ['name', 'unique', 'targetClass' => '\common\models\AdminUser', 'message' => '该用户名存在,请重新输入'],
             [['name','nickname'], 'string', 'min' => 2, 'max' => 255],
 
@@ -125,7 +125,7 @@ class SignupForm extends Model
         $adminuser = new AdminUser();
         $adminuser->name = $this->name;//用户名
         $adminuser->email = $this->email;//邮箱
-        $adminuser->last_login_ip = Yii::$app->getRequest()->getUserIP();//获取登录ip
+        $adminuser->last_login_ip = Yii::$app->id != 'app-console' ? Yii::$app->getRequest()->getUserIP() : '127.0.0.1';//获取登录ip
         $adminuser->nickname = $this->nickname;//昵称
         $adminuser->phone = $this->phone;//电话
         $adminuser->introduction = $this->introduction;//简介
@@ -134,7 +134,6 @@ class SignupForm extends Model
         $adminuser->generateAuthKey();
         $adminuser->generatePasswordResetToken();
         $adminuser->generateEmailVerificationToken();
-
         return $adminuser->save() ? $adminuser : '';
 
     }
