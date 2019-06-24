@@ -125,7 +125,7 @@ class RbacController extends Controller
 			$this->outputInfo();
 		}else{
 			$r_assign = $amg->assign($super_role,$super_admin_id);
-			$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin} success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
+			$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
 			$this->outputInfo();
 		}
 		
