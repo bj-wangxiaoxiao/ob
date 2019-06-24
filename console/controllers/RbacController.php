@@ -32,11 +32,22 @@ class RbacController extends Controller
 	 */
 	public function actionInit()
 	{
+		$assigments = AuthAssignment::find()->asArray()->all();
 		$amg = Yii::$app->authManager;
-		
 		$this->_addPermission($amg);
 		$this->_addRole($amg);
-		$this->_addAssignment($amg);
+		//如果assignment已经有数据了，则不初始化管理员信息了
+		//以上两个方法会清空assignment里的数据，所以此处需要把数据先查出来，等清空后再存进去
+		if(empty($assigments)){
+			$this->_addAssignment($amg);
+		}else{
+			foreach ($assigments as $assigment) {
+				$model = new AuthAssignment();
+				$form['AuthAssignment'] = $assigment;
+				$model->load($form);
+				$model->save();
+			}
+		}
 	}
 	
 	private function _addPermission(ManagerInterface $amg)
