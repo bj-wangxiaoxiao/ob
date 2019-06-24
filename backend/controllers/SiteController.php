@@ -46,29 +46,15 @@ class SiteController extends Controller
 	/**
 	 * {@inheritdoc}
 	 */
-//    public function actions()
-//    {
-//        return [
-//            'error' => [
-//                'class' => 'yii\web\ErrorAction',
-//            ],
-//        ];
-//    }
-	
-	public function actionError()
-	{
-		$msg = Yii::$app->errorHandler->exception->getMessage();
-		return $this->render('error', ['message' => $msg]);
-	}
-	
-//	public function actionError()
-//	{
-//		$exception = Yii::$app->errorHandler->exception;
-//		if ($exception !== null) {
-//			return $this->render('error', ['message' => $exception->getMessage()]);
-//		}
-//	}
-//
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
+    
 	/**
 	 * Displays homepage.
 	 *
@@ -111,7 +97,9 @@ class SiteController extends Controller
 	public function actionLogout()
 	{
 		Yii::$app->user->logout();
-		
-		return $this->goHome();
+		$model = new AdminLoginForm();
+		return $this->render('login', [
+			'model' => $model,
+		]);
 	}
 }

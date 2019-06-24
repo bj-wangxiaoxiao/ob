@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace backend\models;
 
 use Yii;
 
@@ -53,13 +53,13 @@ class AuthItem extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'name' => 'Name',
-            'type' => 'Type',
-            'description' => 'Description',
-            'rule_name' => 'Rule Name',
-            'data' => 'Data',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => '标识',
+            'type' => '类型',
+            'description' => '角色描述',
+            'rule_name' => '规则名称',
+            'data' => '数据',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
         ];
     }
 

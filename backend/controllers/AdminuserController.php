@@ -5,9 +5,9 @@
  */
 namespace backend\controllers;
 
+use backend\models\AuthAssignment;
 use backend\models\SignupForm;
-use common\models\AuthAssignment;
-use common\models\AuthItem;
+use backend\models\AuthItem;
 use Yii;
 use common\models\AdminUser;
 use common\models\AdminuserSearch;
@@ -48,7 +48,14 @@ class AdminuserController extends AdminBaseController
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionTest(){
+    	echo 1;die;
+    }
 
+    public function actionAssignment(){
+	    return $this->render('assignment');
+    }
     /**
      * Displays a single AdminUser model.
      * @param integer $id

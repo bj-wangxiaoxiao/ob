@@ -95,8 +95,8 @@ class m140506_102106_rbac_init extends \yii\db\Migration
             'user_id' => $this->string(64)->notNull(),
             'created_at' => $this->integer(),
             'PRIMARY KEY ([[item_name]], [[user_id]])',
-            'FOREIGN KEY ([[item_name]]) REFERENCES ' . $authManager->itemTable . ' ([[name]])' .
-                $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
+//            'FOREIGN KEY ([[item_name]]) REFERENCES ' . $authManager->itemTable . ' ([[name]])' .
+//                $this->buildFkClause('ON DELETE CASCADE', 'ON UPDATE CASCADE'),
         ], $tableOptions);
 
         if ($this->isMSSQL()) {
