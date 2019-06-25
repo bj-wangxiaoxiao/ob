@@ -18,7 +18,7 @@ class AuthConfig
 {
 	const SUPER_ADMIN = 'SuperAdmin';//统一定义超级管理员的英文名称
 	/**
-	 * 功能列表
+	 * 功能列表，每次新增功能需要在此处新增配置
 	 * @var array
 	 */
 	private static  $auth = [
@@ -41,7 +41,7 @@ class AuthConfig
 		'auth-item'=>[
 			'desc'=>'角色',
 			'extraHandle'=>[],
-		],//sdfadsjfkajdskf
+		],
 	];
 	
 	/**

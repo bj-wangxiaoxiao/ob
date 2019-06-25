@@ -27,6 +27,8 @@ class RbacController extends Controller
 	}
 	
 	/**
+	 * 初始化权限和角色，如果系统无超管，则会把id最小的admin_user设置为超管
+	 * 添加完权限后，需要运行此接口
 	 * @throws \Exception
 	 */
 	public function actionInit()
@@ -39,26 +41,32 @@ class RbacController extends Controller
 		//以上两个方法会清空assignment里的数据，所以此处需要把数据先查出来，等清空后再存进去
 		if(empty($assigments)){
 			$this->_addAssignment($amg);
-		}else{
-			foreach ($assigments as $assigment) {
-				$model = new AuthAssignment();
-				$form['AuthAssignment'] = $assigment;
-				$model->load($form);
-				$model->save();
-			}
 		}
+//		else{
+//			foreach ($assigments as $assigment) {
+//				$model = new AuthAssignment();
+//				$form['AuthAssignment'] = $assigment;
+//				$model->load($form);
+//				$model->save();
+//			}
+//		}
 	}
 	
 	private function _addPermission(ManagerInterface $amg)
 	{
 		//1、清空所有的权限
-		AuthItem::deleteAll(['type' => Item::TYPE_PERMISSION]);
+//		AuthItem::deleteAll(['type' => Item::TYPE_PERMISSION]);
 		//循环配置文件，逐一添加需要的权限
+		$succ = 0;
 		foreach ($this->auth as $auth => $item) {
 			$auth_desc = $item['desc'];
 			$this->handle = array_merge($this->handle,$item['extraHandle']);
 			foreach ($this->handle as $handle => $desc) {
 				$auth_handle = $auth . '/' . $handle;
+				$one = AuthItem::findOne(['name'=>$auth_handle]);
+				if($one){
+					continue;
+				}
 				$p = $amg->createPermission($auth_handle);
 				$p->description = $auth_desc . $desc;
 				$amg->add($p);
@@ -75,14 +83,21 @@ class RbacController extends Controller
 	{
 		$succ = 0;
 		//1、清空所有的角色
-		AuthItem::deleteAll(['type' => Item::TYPE_ROLE]);
+//		AuthItem::deleteAll(['type' => Item::TYPE_ROLE]);
 		//循环配置文件，逐一添加需要的角色
 		foreach ($this->role as $name => $info) {
 			$desc = $info['desc'];
 			$parent = $info['parent'];
 			$role = $amg->createRole($name);
 			$role->description = $desc;
-			$amg->add($role);
+			try {
+				$amg->add($role);
+				$this->msg = "add role [{$name}] success !";
+				$this->outputInfo();
+			} catch (\Exception $e) {
+				$this->msg = "{$name} has been added";
+				$this->outputInfo();
+			}
 			/**
 			 * 是否添加层级关系
 			 */
@@ -90,16 +105,14 @@ class RbacController extends Controller
 				$parent_role = $amg->getRole($parent);
 				try {
 					$amg->addChild($parent_role, $role);
+					$this->msg = "add {$parent_role->name}'s child [$name] success !";
+					$this->outputInfo();
+					$succ++;
 				} catch (Exception $e) {
-					$this->msg = 'parent has been added';
+					$this->msg = "add {$parent_role->name}'s child [$name] error，maybe has existed !";
 					$this->outputInfo();
 				}
-				$this->msg = "add {$parent_role->name}'s child [$name] success !";
-				$this->outputInfo();
 			}
-			$this->msg = "add role [{$name}] success !";
-			$succ++;
-			$this->outputInfo();
 		}
 		$this->msg = "add role success count : [{$succ}]";
 		$this->outputInfo();
@@ -138,7 +151,6 @@ class RbacController extends Controller
 			$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin} success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
 			$this->outputInfo();
 		}
-		
 		
 		//给超管角色分配所有权限
 		foreach ($per as $item) {
