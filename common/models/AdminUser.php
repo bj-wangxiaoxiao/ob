@@ -38,7 +38,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
 {
     const STATUS_NO_DELETED = 0;
     const STATUS_YES_DELETED = 1;
-
+	public $re_password = null;
     /**
      * {@inheritdoc}
      */
@@ -89,6 +89,7 @@ class AdminUser extends ActiveRecord implements IdentityInterface
             'avatar'                => '头像',
             'email'                 => '邮箱',
             'password'              => '密码',
+            're_password'              => '重复密码',
             'auth_key'              => '认证钥匙',
             'verification_token'    => 'Verification Token',
             'password_reset_token'  => 'Password Reset Token',
