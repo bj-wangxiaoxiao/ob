@@ -37,10 +37,12 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => '文章管理', 'url' => ['/article/index']],
-            ['label' => '评论管理', 'url' => ['/comment/index']],
+        ['label' => '评论管理', 'url' => ['/comment/index']],
         ['label' => '用户管理', 'url' => ['/user/index']],
-        ['label' => '管理员管理', 'url' => ['/adminuser/index']],
-
+        ['label' => '角色和权限', 'items'=>[
+                ['label' => '管理员管理', 'url' => ['/adminuser/index']],
+                ['label' => '角色管理', 'url' => ['/auth-item/index']]
+        ]],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => '登陆', 'url' => ['/site/login']];

@@ -3,10 +3,11 @@
 namespace console\controllers;
 
 use backend\config\AuthConfig;
-use common\models\AuthItem;
+use backend\models\AuthAssignment;
+use backend\models\AuthItem;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
-use yii\rbac\DbManager;
 use yii\rbac\Item;
 use yii\rbac\ManagerInterface;
 
@@ -26,86 +27,46 @@ class RbacController extends Controller
 	}
 	
 	/**
-	 * init rbac auth ,will clear all old data,please see AuthConfig to diy your auth info
+	 * 初始化权限和角色，如果系统无超管，则会把id最小的admin_user设置为超管
+	 * 添加完权限后，需要运行此接口
 	 * @throws \Exception
 	 */
 	public function actionInit()
 	{
+		$assigments = AuthAssignment::find()->asArray()->all();
 		$amg = Yii::$app->authManager;
-		
 		$this->_addPermission($amg);
 		$this->_addRole($amg);
-		$this->_addAssignment($amg);
-
-//        // 添加 "createPost" 权限
-//        $createPost = $auth->createPermission('createPost');
-//        $createPost->description = '新增文章';
-//        $auth->add($createPost);
-//
-//        // 添加 "updatePost" 权限
-//        $updatePost = $auth->createPermission('updatePost');
-//        $updatePost->description = '修改文章';
-//        $auth->add($updatePost);
-//
-//        // 添加 "deletePost" 权限
-//        $deletePost = $auth->createPermission('deletePost');
-//        $deletePost->description = '删除文章';
-//        $auth->add($deletePost);
-//
-//        // 添加 "approveComment" 权限
-//        $approveComment = $auth->createPermission('approveComment');
-//        $approveComment->description = '审核评论';
-//        $auth->add($approveComment);
-//
-//
-//        // 添加 "postadmin" 角色并赋予 "updatePost" “deletePost” “createPost”
-//        $postAdmin = $auth->createRole('postAdmin');
-//        $postAdmin->description = '文章管理员';
-//        $auth->add($postAdmin);
-//        $auth->addChild($postAdmin, $updatePost);
-//        $auth->addChild($postAdmin, $createPost);
-//        $auth->addChild($postAdmin, $deletePost);
-//
-//        // 添加 "postOperator" 角色并赋予  “deletePost”
-//        $postOperator = $auth->createRole('postOperator');
-//        $postOperator->description = '文章操作员';
-//        $auth->add($postOperator);
-//        $auth->addChild($postOperator, $deletePost);
-//
-//        // 添加 "commentAuditor" 角色并赋予  “approveComment”
-//        $commentAuditor = $auth->createRole('commentAuditor');
-//        $commentAuditor->description = '评论审核员';
-//        $auth->add($commentAuditor);
-//        $auth->addChild($commentAuditor, $approveComment);
-//
-//        // 添加 "admin" 角色并赋予所有其他角色拥有的权限
-//        $admin = $auth->createRole('admin');
-//        $commentAuditor->description = '系统管理员';
-//        $auth->add($admin);
-//        $auth->addChild($admin, $postAdmin);
-//        $auth->addChild($admin, $commentAuditor);
-//
-//
-//
-//        // 为用户指派角色。其中 1 和 2 是由 IdentityInterface::getId() 返回的id （译者注：user表的id）
-//        // 通常在你的 User 模型中实现这个函数。
-//        $auth->assign($admin, 1);
-//        $auth->assign($postAdmin, 2);
-//        $auth->assign($postOperator, 3);
-//        $auth->assign($commentAuditor, 4);
+		//如果assignment已经有数据了，则不初始化管理员信息了
+		//以上两个方法会清空assignment里的数据，所以此处需要把数据先查出来，等清空后再存进去
+		if(empty($assigments)){
+			$this->_addAssignment($amg);
+		}
+//		else{
+//			foreach ($assigments as $assigment) {
+//				$model = new AuthAssignment();
+//				$form['AuthAssignment'] = $assigment;
+//				$model->load($form);
+//				$model->save();
+//			}
+//		}
 	}
 	
 	private function _addPermission(ManagerInterface $amg)
 	{
-		$error = $succ = 0;
 		//1、清空所有的权限
-		AuthItem::deleteAll(['type' => Item::TYPE_PERMISSION]);
+//		AuthItem::deleteAll(['type' => Item::TYPE_PERMISSION]);
 		//循环配置文件，逐一添加需要的权限
+		$succ = 0;
 		foreach ($this->auth as $auth => $item) {
 			$auth_desc = $item['desc'];
 			$this->handle = array_merge($this->handle,$item['extraHandle']);
 			foreach ($this->handle as $handle => $desc) {
 				$auth_handle = $auth . '/' . $handle;
+				$one = AuthItem::findOne(['name'=>$auth_handle]);
+				if($one){
+					continue;
+				}
 				$p = $amg->createPermission($auth_handle);
 				$p->description = $auth_desc . $desc;
 				$amg->add($p);
@@ -122,27 +83,36 @@ class RbacController extends Controller
 	{
 		$succ = 0;
 		//1、清空所有的角色
-		AuthItem::deleteAll(['type' => Item::TYPE_ROLE]);
+//		AuthItem::deleteAll(['type' => Item::TYPE_ROLE]);
 		//循环配置文件，逐一添加需要的角色
-		
 		foreach ($this->role as $name => $info) {
 			$desc = $info['desc'];
 			$parent = $info['parent'];
 			$role = $amg->createRole($name);
 			$role->description = $desc;
-			$amg->add($role);
+			try {
+				$amg->add($role);
+				$this->msg = "add role [{$name}] success !";
+				$this->outputInfo();
+			} catch (\Exception $e) {
+				$this->msg = "{$name} has been added";
+				$this->outputInfo();
+			}
 			/**
 			 * 是否添加层级关系
 			 */
 			if($parent){
 				$parent_role = $amg->getRole($parent);
-				$amg->addChild($parent_role,$role);
-				$this->msg = "add {$parent_role->name}'s child [$name] success !";
-				$this->outputInfo();
+				try {
+					$amg->addChild($parent_role, $role);
+					$this->msg = "add {$parent_role->name}'s child [$name] success !";
+					$this->outputInfo();
+					$succ++;
+				} catch (Exception $e) {
+					$this->msg = "add {$parent_role->name}'s child [$name] error，maybe has existed !";
+					$this->outputInfo();
+				}
 			}
-			$this->msg = "add role [{$name}] success !";
-			$succ++;
-			$this->outputInfo();
 		}
 		$this->msg = "add role success count : [{$succ}]";
 		$this->outputInfo();
@@ -172,9 +142,15 @@ class RbacController extends Controller
 		$per = $amg->getPermissions();
 		
 		//给第一个用户添加超管角色
-		$r_assign = $amg->assign($super_role,$super_admin_id);
-		$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin} success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
-		$this->outputInfo();
+		$one = AuthAssignment::findOne(['item_name'=>AuthConfig::SUPER_ADMIN]);
+		if($one){
+			$this->msg = 'SuperAdmin has been set !';
+			$this->outputInfo();
+		}else{
+			$r_assign = $amg->assign($super_role,$super_admin_id);
+			$this->msg = $r_assign ? "set admin_user_id [{$super_admin_id}] as SuperAdmin success !" : "set admin_user_id [{$super_admin_id}] as SuperAdmin} error !";
+			$this->outputInfo();
+		}
 		
 		//给超管角色分配所有权限
 		foreach ($per as $item) {
@@ -186,4 +162,5 @@ class RbacController extends Controller
 		$this->msg = "Set all permissions for super administrators error count : [{$error}]";
 		$this->outputInfo();
 	}
+	
 }

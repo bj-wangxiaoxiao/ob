@@ -17,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('新增管理员', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <p>
+		<?= Html::a('角色权限分配', ['assignment'], ['class' => 'btn btn-success']) ?>
+    </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
