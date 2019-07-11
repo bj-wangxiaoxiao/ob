@@ -8,14 +8,14 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'cache' => [
-//            'class' => 'yii\caching\FileCache',
-            'class' => 'yii\redis\FileCache',
-	        'redis' => [
-		        'hostname' => '39.107.122.34',
-		        'port' => 6379,
-		        'password' => 950826,
-		        'database' => 0,
-	        ],
+            'class' => 'yii\caching\FileCache',
+//            'class' => 'yii\redis\Cache',
+//	        'redis' => [
+//		        'hostname' => '39.107.122.34',
+//		        'port' => 6379,
+//		        'password' => 950826,
+//		        'database' => 0,
+//	        ],
         ],
 	    'authManager' => [
     			'class' =>'yii\rbac\DbManager',
