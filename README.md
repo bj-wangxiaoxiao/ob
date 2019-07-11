@@ -42,5 +42,8 @@ git@github.com:bj-wangxiaoxiao/ob.git
     1.添加管理员命令：php yii admin-user/add
     2.给新增管理员赋予权限： php yii rbac/init
      
-     
-  
+ #陈杰开发进度
+    权限开发尚未完成的
+        1.角色绑定权限的页面
+        2.初始化一个超级管理员的账号：admin，密码：obadmin@123
+        
